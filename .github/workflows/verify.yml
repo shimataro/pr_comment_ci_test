@@ -11,6 +11,11 @@ on:
 #    - created
 #    branches:
 #    - "**"
+  push:
+    branches:
+    - "**"
+    tags-ignore:
+    - "*"
 
 name: Verify
 jobs:
