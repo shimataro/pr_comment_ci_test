@@ -1,0 +1,25 @@
+# https://help.github.com/en/articles/workflow-syntax-for-github-actions
+
+on:
+  pull_request_review:
+    types:
+    - "submitted"
+    branches:
+    - "**"
+
+name: Verify
+jobs:
+  verify:
+    name: Verify
+    if: ${{ github.event.head_commit.message == 'CI' }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os:
+        - ubuntu-20.04
+        nodejs:
+        - 18
+      fail-fast: false
+    steps:
+    - name: github.event
+      run: echo ${{ toJSON(github.event) }}
