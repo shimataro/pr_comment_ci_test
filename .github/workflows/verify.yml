@@ -1,11 +1,11 @@
 # https://help.github.com/en/articles/workflow-syntax-for-github-actions
 
 on:
-  issue_comment:
-    types:
-    - created
-    branches:
-    - "**"
+#  issue_comment:
+#    types:
+#    - created
+#    branches:
+#    - "**"
   push:
     branches:
     - "**"
@@ -17,7 +17,7 @@ jobs:
   verify:
     name: Verify
 #    if: ${{ github.event.head_commit.message == 'CI' }}
-    if: ${{ (github.event.issue.pull_request != null) && github.event.comment.body == 'CI' }}
+#    if: ${{ (github.event.issue.pull_request != null) && github.event.comment.body == 'CI' }}
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
