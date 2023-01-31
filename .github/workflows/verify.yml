@@ -22,5 +22,5 @@ jobs:
         - 18
       fail-fast: false
     steps:
-    - name: github.event
-      run: echo ${{ toJSON(github.event) }}
+    - name: github
+      run: echo '${{ toJSON(github) }}'
