@@ -6,6 +6,11 @@ on:
     - created
     branches:
     - "**"
+  push:
+    branches:
+    - "**"
+    tags-ignore:
+    - "*"     # タグのpush時は検証しない（本番環境デプロイスクリプト内で検証される）
 
 name: Verify
 jobs:
