@@ -39,4 +39,4 @@ jobs:
         -H "Authorization: Bearer ${{ secrets.GH_TOKEN }}"
         -H "X-GitHub-Api-Version: 2022-11-28"
         https://api.github.com/repos/${{ github.repository }}/statuses/${{ steps.get-sha.outputs.sha }}
-        -d '{"state":"success","description":"CI OK","context":"${{ github.workflow }}"}'
+        -d '{"state":"success","description":":+1:","context":"${{ github.workflow }}"}'
