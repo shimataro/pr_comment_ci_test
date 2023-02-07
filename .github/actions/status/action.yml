@@ -1,0 +1,30 @@
+# https://docs.github.com/en/actions/creating-actions/creating-a-composite-action
+# https://docs.github.com/en/rest/commits/statuses?apiVersion=2022-11-28
+name: set status using Status API
+description: Composite action (set status)
+
+inputs:
+  state:
+    description: Status to set (error, failure, pending, success)
+    required: true
+  api-version:
+    description: GitHub API version
+    required: false
+    default: "2022-11-28"
+
+runs:
+  using: composite
+  steps:
+    - id: get-sha
+      name: get SHA
+      uses: ./github/actions/get-sha
+    - name: status
+      run: >-
+        curl
+        -X POST
+        -H "Accept: application/vnd.github+json"
+        -H "Authorization: Bearer ${{ secrets.GH_TOKEN }}"
+        -H "X-GitHub-Api-Version: ${{ inputs.api-version }}"
+        https://api.github.com/repos/${{ github.repository }}/statuses/${{ steps.get-sha.outputs.sha }}
+        -d '{"state":"${{ inputs.state }}","description":":+1:","context":"${{ github.workflow }}"}'
+      shell: bash
