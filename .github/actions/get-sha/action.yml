@@ -1,0 +1,14 @@
+# https://docs.github.com/en/actions/creating-actions/creating-a-composite-action
+# https://buildersbox.corp-sansan.com/entry/2021/02/05/110000
+name: Get SHA
+description: Composite action (get SHA)
+
+runs:
+  using: composite
+  steps:
+    - name: Get branch name and sha
+      id: get-sha
+      run: |
+        PR=$(curl -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" ${{ github.event.issue.pull_request.url }})
+        echo "sha=$(echo $PR | jq -r '.head.sha')" >> ${{ github.output }}
+      shell: bash
