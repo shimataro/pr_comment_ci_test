@@ -17,7 +17,7 @@ runs:
   steps:
     - id: get-sha
       name: get SHA
-      uses: ./github/actions/get-sha
+      uses: ./.github/actions/get-sha
     - name: status
       run: >-
         curl

@@ -22,18 +22,18 @@ jobs:
       fail-fast: false
     steps:
     - name: status to pending
-      uses: ./github/actions/status
+      uses: ./.github/actions/status
       with:
         state: pending
     - name: github
       run: echo '${{ toJSON(github) }}'
     - name: status to success
-      uses: ./github/actions/status
+      uses: ./.github/actions/status
       with:
         state: success
       if: ${{ success() }}
     - name: status to error
-      uses: ./github/actions/status
+      uses: ./.github/actions/status
       with:
         state: error
       if: ${{ failure() }}
