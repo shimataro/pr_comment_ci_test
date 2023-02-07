@@ -1,27 +1,19 @@
 # https://help.github.com/en/articles/workflow-syntax-for-github-actions
+# https://buildersbox.corp-sansan.com/entry/2021/02/05/110000
+# https://docs.github.com/en/rest/commits/statuses?apiVersion=2022-11-28
 
 on:
-  pull_request_review:
+  issue_comment:
     types:
-    - "submitted"
+    - created
     branches:
     - "**"
-#  issue_comment:
-#    types:
-#    - created
-#    branches:
-#    - "**"
-  push:
-    branches:
-    - "**"
-    tags-ignore:
-    - "*"
 
 name: Verify
 jobs:
   verify:
     name: Verify
-#    if: ${{ github.event.head_commit.message == 'CI' }}
+    if: ${{ (github.event_name == 'issue_comment') && contains(github.event.comment.html_url, '/pull/') && startsWith(github.event.comment.body, '/ci') }}
 #    if: ${{ (github.event.issue.pull_request != null) && (github.event.comment.body == 'CI') }}
     runs-on: ${{ matrix.os }}
     strategy:
@@ -34,12 +26,18 @@ jobs:
     steps:
     - name: github
       run: echo '${{ toJSON(github) }}'
-#    - name: status
-#      run: >-
-#        curl
-#        -X POST
-#        -H "Accept: application/vnd.github+json"
-#        -H "Authorization: Bearer ${{ secrets.GH_TOKEN }}"
-#        -H "X-GitHub-Api-Version: 2022-11-28"
-#        https://api.github.com/repos/${{ github.repository }}/statuses/${{ github.sha }}
-#        -d '{"state":"success","description":"CI OK","context":"${{ github.workflow }}"}'
+    - name: Get branch name and sha
+      id: get_branch
+      run: |
+        PR=$(curl -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" ${{ github.event.issue.pull_request.url }})
+        echo "branch=$(echo $PR | jq -r '.head.ref')" >> ${{ github.output }}
+        echo "sha=$(echo $PR | jq -r '.head.sha')" >> ${{ github.output }}
+    - name: status
+      run: >-
+        curl
+        -X POST
+        -H "Accept: application/vnd.github+json"
+        -H "Authorization: Bearer ${{ secrets.GH_TOKEN }}"
+        -H "X-GitHub-Api-Version: 2022-11-28"
+        https://api.github.com/repos/${{ github.repository }}/statuses/${{ steps.get_branch.outputs.sha }}
+        -d '{"state":"success","description":"CI OK","context":"${{ github.workflow }}"}'
