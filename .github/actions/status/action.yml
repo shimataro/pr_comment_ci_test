@@ -26,5 +26,5 @@ runs:
         -H "Authorization: Bearer ${{ secrets.GH_TOKEN }}"
         -H "X-GitHub-Api-Version: ${{ inputs.api-version }}"
         https://api.github.com/repos/${{ github.repository }}/statuses/${{ steps.get-sha.outputs.sha }}
-        -d '{"state":"${{ inputs.state }}","description":":+1:","context":"${{ github.workflow }}"}'
+        -d '{"state":"${{ inputs.state }}","context":"${{ github.workflow }}"}'
       shell: bash
