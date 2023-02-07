@@ -21,6 +21,8 @@ jobs:
         - 18
       fail-fast: false
     steps:
+    - name: Checkout source codes
+      uses: actions/checkout@v3
     - name: status to pending
       uses: ./.github/actions/status
       with:
