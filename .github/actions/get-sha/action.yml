@@ -3,6 +3,11 @@
 name: Get SHA
 description: Composite action (get SHA)
 
+outputs:
+  sha:
+    description: SHA value
+    value: ${{ steps.get-sha.outputs.sha }}
+
 runs:
   using: composite
   steps:
