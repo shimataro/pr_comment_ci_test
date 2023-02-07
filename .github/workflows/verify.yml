@@ -13,7 +13,7 @@ name: Verify
 jobs:
   verify:
     name: Verify
-    if: ${{ (github.event.issue.pull_request != null) && (github.event.comment.body == 'CI') }}
+    if: ${{ (github.event.issue.pull_request != null) && (github.event.comment.body == '/ci') }}
 #    if: ${{ (github.event_name == 'issue_comment') && contains(github.event.comment.html_url, '/pull/') && startsWith(github.event.comment.body, '/ci') }}
     runs-on: ${{ matrix.os }}
     strategy:
