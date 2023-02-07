@@ -29,5 +29,9 @@ runs:
         -H "Authorization: Bearer ${{ inputs.token }}"
         -H "X-GitHub-Api-Version: ${{ inputs.api-version }}"
         https://api.github.com/repos/${{ github.repository }}/statuses/${{ inputs.sha }}
-        -d '{"state":"${{ inputs.state }}","target_url":"${{ github.event.repository.html_url }}/actions/runs/${{ github.run_id }}","context":"${{ github.workflow }}"}'
+        -d '${{ toJSON({
+          state: inputs.state,
+          target_url: format('{0}/actions/runs/{1}', github.event.repository.html_url, github.run_id),
+          context: github.workflow,
+        }) }}'
       shell: bash
