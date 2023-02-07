@@ -10,6 +10,9 @@ inputs:
   state:
     description: Status to set (error, failure, pending, success)
     required: true
+  token:
+    description: access token that have write permission to "commit statuses" (fine-grained) or "repo:status" (classic)
+    required: true
   api-version:
     description: GitHub API version
     required: false

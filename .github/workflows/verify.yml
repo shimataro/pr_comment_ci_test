@@ -31,6 +31,7 @@ jobs:
       with:
         sha: ${{ steps.get-sha.outputs.sha }}
         state: pending
+        token: ${{ secrets.GH_TOKEN }}
     - name: github
       run: echo '${{ toJSON(github) }}'
     - name: status to success
@@ -38,10 +39,12 @@ jobs:
       with:
         sha: ${{ steps.get-sha.outputs.sha }}
         state: success
+        token: ${{ secrets.GH_TOKEN }}
       if: ${{ success() }}
     - name: status to error
       uses: ./.github/actions/status
       with:
         sha: ${{ steps.get-sha.outputs.sha }}
         state: error
+        token: ${{ secrets.GH_TOKEN }}
       if: ${{ failure() }}
