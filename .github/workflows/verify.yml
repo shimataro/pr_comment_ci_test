@@ -11,14 +11,11 @@ jobs:
   verify:
     name: Verify
     if: ${{ (github.event_name == 'issue_comment') && (github.event.issue.pull_request != null) && (github.event.comment.body == '/ci') }}
-#    if: ${{ contains(github.event.comment.html_url, '/pull/') && startsWith(github.event.comment.body, '/ci') }}
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         os:
         - ubuntu-20.04
-        nodejs:
-        - 18
       fail-fast: false
     steps:
     - name: Checkout source codes
@@ -32,8 +29,12 @@ jobs:
         sha: ${{ steps.get-sha.outputs.sha }}
         state: pending
         token: ${{ secrets.GH_TOKEN }}
+
+    # CI
     - name: github
       run: echo '${{ toJSON(github) }}'
+
+    # update status
     - name: status to success
       uses: ./.github/actions/status
       with:
